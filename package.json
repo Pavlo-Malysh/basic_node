@@ -17,9 +17,14 @@
   "homepage": "https://github.com/Pavlo-Malysh/basic_node#readme",
   "description": "",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
+    "http-errors": "^2.0.0",
     "mongoose": "^8.18.3",
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "pino": "^10.0.0",
+    "pino-http": "^11.0.0",
+    "pino-pretty": "^13.1.2"
   }
 }

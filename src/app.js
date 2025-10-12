@@ -1,41 +1,32 @@
 import express from 'express';
-import { Student } from "./models/student.js";
+import cors from 'cors';
+import pino from "pino-http";
+import studentRouter from "./routers/students.js";
+import { notFoundHandler } from './middlewares/notFoundHandler.js';
+import { errorHandler } from './middlewares/errorHandler.js';
 
 const app = express();
 
-app.use((req, res, next) => {
-    console.log(`Time: ${new Date().toLocaleString()}`);
-    next();
-});
-app.get("/students", async (req, res) => {
-    const students = await Student.find();
+app.use(express.json());
+app.use(cors());
 
-    res.json({
-        status: 200,
-        message: "Students get successfully",
-        data: students,
-    });
+// app.use((req, res, next) => {
+//     console.log(`Time: ${new Date().toLocaleString()}`);
+//     next();
+// });
+app.use(
+    pino({
+        transport: {
+            target: 'pino-pretty',
+        },
+    }),
+);
 
-});
+app.use(studentRouter);
 
-app.get("/students/:id", async (req, res) => {
-    const { id } = req.params;
+app.use(notFoundHandler);
 
-    const student = await Student.findById(id);
-
-    if (student === null) {
-        return res.status(404).json({
-            status: 404,
-            message: "Student not found!",
-        })
-    }
-
-    res.json({
-        status: 200,
-        message: "Student get successfully",
-        data: student,
-    })
-})
+app.use(errorHandler);
 
 export default app;
 
