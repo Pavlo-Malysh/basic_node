@@ -1,7 +1,23 @@
 import { Student } from "../models/student.js";
+import { calculatePaginationData } from "../utils/calculatePaginationData.js";
 
-export function getAllStudents() {
-    return Student.find();
+export async function getAllStudents({ page, perPage, sortBy, sortOrder }) {
+
+    const limit = perPage;
+    const skip = page > 0 ? (page - 1) * perPage : 0;
+    const studentQuery = Student.find();
+    const studentCount = await Student.find().merge(studentQuery).countDocuments();
+
+    const students = await Student.find().skip(skip).limit(limit).sort({ [sortBy]: sortOrder }).exec();
+
+
+    const paginationData = calculatePaginationData(studentCount, perPage, page);
+
+    return {
+        data: students,
+        ...paginationData,
+    }
+
 };
 
 export function getStudentById(studentId) {

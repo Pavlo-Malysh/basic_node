@@ -2,7 +2,7 @@ import 'dotenv/config'
 import app from "./app.js";
 import { initDBConnection } from "./db.js";
 
-const PORT = 8083;
+const PORT = 8088;
 
 async function bootstrap() {
     try {
